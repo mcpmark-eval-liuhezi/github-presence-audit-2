@@ -1,0 +1,26 @@
+name: Audit report check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check AUDIT.md exists
+        run: |
+          if [ ! -f AUDIT.md ]; then
+            echo "AUDIT.md is missing" >&2
+            exit 1
+          fi
+          echo "AUDIT.md is present"
+
+      - name: Upload audit report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-report
+          path: AUDIT.md
